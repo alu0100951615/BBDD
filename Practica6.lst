@@ -1,0 +1,77 @@
+SQL> SELECT SYSDATE FROM DUAL;
+
+SYSDATE                                                                         
+---------                                                                       
+21-NOV-18                                                                       
+
+SQL> SELECT TO_CHAR(SYSDATE,'HH') FROM DUAL;
+
+TO                                                                              
+--                                                                              
+01                                                                              
+
+SQL> SELECT TO_CHAR(SYSDATE,'HH:MI:SS') FROM DUAL;
+
+TO_CHAR(                                                                        
+--------                                                                        
+01:26:46                                                                        
+
+SQL> SELECT TO_CHAR(SYSDATE,'DY:DD:MM:YYYY') FROM DUAL;
+
+TO_CHAR(SYSDATE,'DY:DD:                                                         
+-----------------------                                                         
+WED:21:11:2018                                                                  
+
+SQL> SELECT TO_CHAR(SYSDATE,'HH24:MI:SS') FROM DUAL;
+
+TO_CHAR(                                                                        
+--------                                                                        
+13:38:38                                                                        
+
+SQL> SELECT(SELECT SYSDATE) -FI FROM PLAN_DOCENTE IN DNI=8888 AND CAS=11;
+SELECT(SELECT SYSDATE) -FI FROM PLAN_DOCENTE IN DNI=8888 AND CAS=11
+                     *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT(SELECT SYSDATE)-FI FROM PLAN_DOCENTE IN DNI=8888 AND CAS=11;
+SELECT(SELECT SYSDATE)-FI FROM PLAN_DOCENTE IN DNI=8888 AND CAS=11
+                     *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT(SELECT SYSDATE)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11;
+SELECT(SELECT SYSDATE)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11
+                     *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT (SELECT SYSDATE)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11;
+SELECT (SELECT SYSDATE)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11
+                      *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT (SELECT SYSDATE)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11;
+SELECT (SELECT SYSDATE)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11
+                      *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT (SELECT SYSDATE FROM DUAL)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11;
+
+(SELECTSYSDATEFROMDUAL)-FI                                                      
+--------------------------                                                      
+                3368.57366                                                      
+
+SQL> COMMIT WORK
+  2  ;
+
+Commit complete.
+
+SQL> SPOOL OFF
