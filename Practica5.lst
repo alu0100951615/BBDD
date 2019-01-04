@@ -1,0 +1,2416 @@
+SQL> ELECT A FROM ASIGNATURA WHERE CAR IN(SELECT CAR FROM AREA WHERE AR LIKE 'A%');
+SP2-0734: unknown command beginning "ELECT A FR..." - rest of line ignored.
+SQL> SELECT A FROM ASIGNATURA WHERE CAR IN(SELECT CAR FROM AREA WHERE AR LIKE 'A%');
+
+A                                                                               
+--------------------------------------------------                              
+ALGEBRA                                                                         
+ANALISIS COMPLEJO                                                               
+ASTRONOMIA                                                                      
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAR IN (SELECT CAR IN AREA WHERE AR LIKE '%A');
+SELECT A FROM ASIGNATURA WHERE CAR IN (SELECT CAR IN AREA WHERE AR LIKE '%A')
+                                                  *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAR IN (SELECT CAR FROM AREA WHERE AR LIKE '%A');
+
+A                                                                               
+--------------------------------------------------                              
+ALGEBRA                                                                         
+ASTRONOMIA                                                                      
+ENSENANZA DE LA MATEMATICA                                                      
+OPTIMIZACION                                                                    
+CALCULO                                                                         
+
+SQL> SELECT A FROM ASIGNATURA WHERE A LIKE '%DATOS%');
+SELECT A FROM ASIGNATURA WHERE A LIKE '%DATOS%')
+                                               *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT A FROM ASIGNATURA WHERE A LIKE '%DATOS%';
+
+A                                                                               
+--------------------------------------------------                              
+BASES DE DATOS                                                                  
+ALMACENES DE DATOS                                                              
+MINERIA DE DATOS                                                                
+
+SQL> SELECT DNI FROM PROFESOR WHERE DNI LIKE '__R%';
+
+no rows selected
+
+SQL> SELECT DNI FROM PROFESOR WHERE P LIKE '__R%';
+
+       DNI                                                                      
+----------                                                                      
+      2222                                                                      
+      4444                                                                      
+      6666                                                                      
+      7777                                                                      
+
+SQL> SELECT DNI FROM PROFESOR WHERE P LIKE '_____';
+
+       DNI                                                                      
+----------                                                                      
+      3333                                                                      
+      4444                                                                      
+      7777                                                                      
+      1010                                                                      
+
+SQL> SELECT DISTINCT DNI FROM PROFESOR WHERE LENGTH (P) <=5;
+
+       DNI                                                                      
+----------                                                                      
+      1111                                                                      
+      3333                                                                      
+      4444                                                                      
+      5555                                                                      
+      7777                                                                      
+      1010                                                                      
+
+6 rows selected.
+
+SQL> SELECT DISTINCT DNI FROM PROFESOR WHERE LENGTH (P) <5;
+
+       DNI                                                                      
+----------                                                                      
+      1111                                                                      
+      5555                                                                      
+
+SQL> SELECT DISTINCT DNI FROM PROFESOR WHERE LENGTH (P) <=5;
+
+       DNI                                                                      
+----------                                                                      
+      1111                                                                      
+      3333                                                                      
+      4444                                                                      
+      5555                                                                      
+      7777                                                                      
+      1010                                                                      
+
+6 rows selected.
+
+SQL> SELECT DISTINCT DNI FROM PROFESOR WHERE LENGTH (P) <=5;
+
+       DNI                                                                      
+----------                                                                      
+      1111                                                                      
+      3333                                                                      
+      4444                                                                      
+      5555                                                                      
+      7777                                                                      
+      1010                                                                      
+
+6 rows selected.
+
+SQL> SELECT DISTINCT DNI FROM PROFESOR WHERE LENGTH (P) >5;
+
+       DNI                                                                      
+----------                                                                      
+      2222                                                                      
+      6666                                                                      
+      8888                                                                      
+      9999                                                                      
+      2020                                                                      
+      3030                                                                      
+
+6 rows selected.
+
+SQL> SELECT P FROM PROFESOR WHERE FF IS NULL;
+SELECT P FROM PROFESOR WHERE FF IS NULL
+                             *
+ERROR at line 1:
+ORA-00904: "FF": invalid identifier 
+
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL);
+
+P                                                                               
+------------------------------------------------------------                    
+DAVID                                                                           
+JUAN                                                                            
+SOLEDAD                                                                         
+CARLOS                                                                          
+JOSE MANUEL                                                                     
+PEDRO                                                                           
+MARIA                                                                           
+IVAN                                                                            
+MARIO                                                                           
+FRANCISCO                                                                       
+ANGELA                                                                          
+
+11 rows selected.
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE CAS=8);
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+JOSE MANUEL                                                                     
+
+SQL> SELECT * FROM PLAN_DOCENTE;
+
+       DNI        CAS        CTA        CPA        CLA FI        FF             
+---------- ---------- ---------- ---------- ---------- --------- ---------      
+      4444          1          3        1.5        1.5 01-SEP-11                
+      4444          4        1.5          0          0 01-SEP-08 31-AUG-10      
+      4444          5          3          0          0 01-SEP-10                
+      1111          8          3        1.5        1.5 01-SEP-07 31-AUG-09      
+      1111          8          3          0          0 01-SEP-09                
+      3030          8          0        1.5        1.5 01-SEP-09                
+      2222          4        1.5          0        1.5 01-SEP-09                
+      2222          3        1.5          0        1.5 01-SEP-06 31-AUG-07      
+      1010          2        1.5        1.5          3 01-SEP-05 31-AUG-08      
+      3333          2        1.5        1.5          3 01-SEP-08                
+      1010          9          3          0          3 01-SEP-08 31-AUG-09      
+
+       DNI        CAS        CTA        CPA        CLA FI        FF             
+---------- ---------- ---------- ---------- ---------- --------- ---------      
+      1010          9        1.5          0        1.5 01-SEP-09                
+      9999          7          3          3          0 01-SEP-10                
+      5555          6          3          3          0 31-MAR-10                
+      6666         10          3        1.5        1.5 01-SEP-08 31-AUG-11      
+      8888         11          6          0          0 01-SEP-09                
+      2020          3        1.5          0        1.5 01-SEP-08                
+      7777         12        4.5          3          0 01-SEP-10                
+      3333          9        1.5          0        1.5 01-SEP-09                
+
+19 rows selected.
+
+SQL> SELECT * FROM PLAN_DOCENTE ORDER BY FF;
+
+       DNI        CAS        CTA        CPA        CLA FI        FF             
+---------- ---------- ---------- ---------- ---------- --------- ---------      
+      2222          3        1.5          0        1.5 01-SEP-06 31-AUG-07      
+      1010          2        1.5        1.5          3 01-SEP-05 31-AUG-08      
+      1010          9          3          0          3 01-SEP-08 31-AUG-09      
+      1111          8          3        1.5        1.5 01-SEP-07 31-AUG-09      
+      4444          4        1.5          0          0 01-SEP-08 31-AUG-10      
+      6666         10          3        1.5        1.5 01-SEP-08 31-AUG-11      
+      1010          9        1.5          0        1.5 01-SEP-09                
+      9999          7          3          3          0 01-SEP-10                
+      5555          6          3          3          0 31-MAR-10                
+      8888         11          6          0          0 01-SEP-09                
+      2020          3        1.5          0        1.5 01-SEP-08                
+
+       DNI        CAS        CTA        CPA        CLA FI        FF             
+---------- ---------- ---------- ---------- ---------- --------- ---------      
+      7777         12        4.5          3          0 01-SEP-10                
+      3333          9        1.5          0        1.5 01-SEP-09                
+      2222          4        1.5          0        1.5 01-SEP-09                
+      3030          8          0        1.5        1.5 01-SEP-09                
+      1111          8          3          0          0 01-SEP-09                
+      4444          5          3          0          0 01-SEP-10                
+      4444          1          3        1.5        1.5 01-SEP-11                
+      3333          2        1.5        1.5          3 01-SEP-08                
+
+19 rows selected.
+
+SQL> SELECT * FROM PLAN_DOCENTE ORDER BY FF DESC;
+
+       DNI        CAS        CTA        CPA        CLA FI        FF             
+---------- ---------- ---------- ---------- ---------- --------- ---------      
+      4444          1          3        1.5        1.5 01-SEP-11                
+      3333          2        1.5        1.5          3 01-SEP-08                
+      7777         12        4.5          3          0 01-SEP-10                
+      2020          3        1.5          0        1.5 01-SEP-08                
+      8888         11          6          0          0 01-SEP-09                
+      5555          6          3          3          0 31-MAR-10                
+      9999          7          3          3          0 01-SEP-10                
+      4444          5          3          0          0 01-SEP-10                
+      1111          8          3          0          0 01-SEP-09                
+      3030          8          0        1.5        1.5 01-SEP-09                
+      2222          4        1.5          0        1.5 01-SEP-09                
+
+       DNI        CAS        CTA        CPA        CLA FI        FF             
+---------- ---------- ---------- ---------- ---------- --------- ---------      
+      3333          9        1.5          0        1.5 01-SEP-09                
+      1010          9        1.5          0        1.5 01-SEP-09                
+      6666         10          3        1.5        1.5 01-SEP-08 31-AUG-11      
+      4444          4        1.5          0          0 01-SEP-08 31-AUG-10      
+      1010          9          3          0          3 01-SEP-08 31-AUG-09      
+      1111          8          3        1.5        1.5 01-SEP-07 31-AUG-09      
+      1010          2        1.5        1.5          3 01-SEP-05 31-AUG-08      
+      2222          3        1.5          0        1.5 01-SEP-06 31-AUG-07      
+
+19 rows selected.
+
+SQL> SELECT P FROM PROFESOR WHERE CAR IN(SELECT CAR FROM ASIGNATURA WHERE A='OPTIMIZACION');
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+JOSE MANUEL                                                                     
+
+SQL> SELECT P FROM PROFESOR  ORDER BY PWHERE CAR IN(SELECT CAR FROM ASIGNATURA WHERE A='OPTIMIZACION');
+SELECT P FROM PROFESOR  ORDER BY PWHERE CAR IN(SELECT CAR FROM ASIGNATURA WHERE A='OPTIMIZACION')
+                                        *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT P FROM PROFESOR WHERE CAR IN(SELECT CAR FROM ASIGNATURA WHERE A='OPTIMIZACION');
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+JOSE MANUEL                                                                     
+
+SQL> SELECT P FROM PROFESOR WHERE CAR IN(SELECT CAR FROM ASIGNATURA WHERE A='OPTIMIZACION')ORDER BY P;
+
+P                                                                               
+------------------------------------------------------------                    
+JOSE MANUEL                                                                     
+JUAN                                                                            
+
+SQL> SELECT P FROM PROFESOR WHERE CAR IN(SELECT CAR FROM ASIGNATURA WHERE A='OPTIMIZACION' AND T='GII')ORDER BY P;
+
+P                                                                               
+------------------------------------------------------------                    
+JOSE MANUEL                                                                     
+JUAN                                                                            
+
+SQL> SELECT P FROM PROFESOR WHERE CAR IN (SELECT CAR FROM AREA WHERE CD=4) ORDER BY P ESC;
+SELECT P FROM PROFESOR WHERE CAR IN (SELECT CAR FROM AREA WHERE CD=4) ORDER BY P ESC
+                                                                                 *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT P FROM PROFESOR WHERE CAR IN (SELECT CAR FROM AREA WHERE CD=4) ORDER BY P DESC;
+
+P                                                                               
+------------------------------------------------------------                    
+IVAN                                                                            
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAR IN (SELECT CAR FROM PROFESOR WHERE DNI=1010);
+
+A                                                                               
+--------------------------------------------------                              
+INTELIGENCIA ARTIFICIAL                                                         
+GESTION DE RIESGOS                                                              
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAR IN(SELECT CAR FROM PROFESOR WHERE P='DAVID');
+
+A                                                                               
+--------------------------------------------------                              
+INTELIGENCIA ARTIFICIAL                                                         
+GESTION DE RIESGOS                                                              
+
+SQL> SELECT AR FROM AREA WHERE CD = 3;
+
+AR                                                                              
+------------------------------------------------------------                    
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+ESTADISTICA E INVESTIGACION OPERATIVA                                           
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAR IN(SELECT CAR FROM PROFESOR WHERE CAT='CU');
+
+A                                                                               
+--------------------------------------------------                              
+OPTIMIZACION                                                                    
+BASES DE DATOS                                                                  
+ALMACENES DE DATOS                                                              
+MINERIA DE DATOS                                                                
+INFORMATICA BASICA                                                              
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAS IN(SELECT CAS FROM PLAN_DOCENTE WHERE FF IS NULL AND DNI IN(SELECT DNI FROM PROFESOR WHERE CAT='CU'));
+
+A                                                                               
+--------------------------------------------------                              
+OPTIMIZACION                                                                    
+ALMACENES DE DATOS                                                              
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAS IN(SELECT CAS FROM PLAN_DOCENTE WHERE FI EXISTS AND DNI IN(SELECT DNI FROM PROFESOR WHERE CAT='CU'));
+SELECT A FROM ASIGNATURA WHERE CAS IN(SELECT CAS FROM PLAN_DOCENTE WHERE FI EXISTS AND DNI IN(SELECT DNI FROM PROFESOR WHERE CAT='CU'))
+                                                                            *
+ERROR at line 1:
+ORA-00920: invalid relational operator 
+
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAS IN(SELECT CAS FROM PLAN_DOCENTE WHERE EXISTS FI AND DNI IN(SELECT DNI FROM PROFESOR WHERE CAT='CU'));
+SELECT A FROM ASIGNATURA WHERE CAS IN(SELECT CAS FROM PLAN_DOCENTE WHERE EXISTS FI AND DNI IN(SELECT DNI FROM PROFESOR WHERE CAT='CU'))
+                                                                                *
+ERROR at line 1:
+ORA-00906: missing left parenthesis 
+
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAS IN(SELECT CAS FROM PLAN_DOCENTE WHERE EXISTS FI AND DNI IN(SELECT DNI FROM PROFESOR WHERE CAT='CU'));
+SELECT A FROM ASIGNATURA WHERE CAS IN(SELECT CAS FROM PLAN_DOCENTE WHERE EXISTS FI AND DNI IN(SELECT DNI FROM PROFESOR WHERE CAT='CU'))
+                                                                                *
+ERROR at line 1:
+ORA-00906: missing left parenthesis 
+
+
+SQL> 
+SQL> SELECT A FROM ASIGNATURA WHERE CAS IN(SELECT CAS FROM PLAN_DOCENTE WHERE FI IS NOT NULL AND DNI IN(SELECT DNI FROM PROFESOR WHERE CAT='CU'));
+
+A                                                                               
+--------------------------------------------------                              
+OPTIMIZACION                                                                    
+ALMACENES DE DATOS                                                              
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAS IN(SELECT CAS FROM PLAN_DOCENTE WHERE FI IS NOT NULL AND FF IS NOT NULL AND DNI IN(SELECT DNI FROM PROFESOR WHERE CAT='CU'));
+
+A                                                                               
+--------------------------------------------------                              
+OPTIMIZACION                                                                    
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAS IN(SELECT CAS FROM PLAN_DOCENTE WHERE FI IS NOT NULL AND FF IS NULL AND DNI IN(SELECT DNI FROM PROFESOR WHERE CAT='CU'));
+
+A                                                                               
+--------------------------------------------------                              
+OPTIMIZACION                                                                    
+ALMACENES DE DATOS                                                              
+
+SQL> SELECT A FROM ASIGNATURA WHERE CAR IN (SELECT CAR FROM AREA WHERE AR = 'LENGUAJES Y SISTEMAS INFORMATICOS' OR AR = 'CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL');
+
+A                                                                               
+--------------------------------------------------                              
+GESTION DE RIESGOS                                                              
+INTELIGENCIA ARTIFICIAL                                                         
+INFORMATICA BASICA                                                              
+MINERIA DE DATOS                                                                
+ALMACENES DE DATOS                                                              
+BASES DE DATOS                                                                  
+
+6 rows selected.
+
+SQL> SELECT P FROM PROFESOR WHERE CAR IN (SELECT CAR FROM ASIGNATURA WHERE T='GII' OR T='MII');
+
+P                                                                               
+------------------------------------------------------------                    
+CARLOS                                                                          
+MARIA                                                                           
+SOLEDAD                                                                         
+PEDRO                                                                           
+DAVID                                                                           
+IVAN                                                                            
+ANGELA                                                                          
+JUAN                                                                            
+JOSE MANUEL                                                                     
+
+9 rows selected.
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN(SELECT CAS FROM ASIGNATURA WHERE T='GII' OR T='MII');
+SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN(SELECT CAS FROM ASIGNATURA WHERE T='GII' OR T='MII')
+                                                                                                                                                 *
+ERROR at line 1:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN(SELECT CAS FROM ASIGNATURA WHERE T='GII' OR T='MII'));
+
+P                                                                               
+------------------------------------------------------------                    
+DAVID                                                                           
+JUAN                                                                            
+SOLEDAD                                                                         
+CARLOS                                                                          
+JOSE MANUEL                                                                     
+PEDRO                                                                           
+MARIA                                                                           
+IVAN                                                                            
+ANGELA                                                                          
+
+9 rows selected.
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE FF IS NULL AND CAS IN(SELECT CAS FROM ASIGNATURA WHERE T='GII' AND T='MII'));
+
+no rows selected
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN(SELECT DNI FROM(SELECT DISTINCT DNI FROM PLAN_DOCENTE MINUS SELECT DISTINCT DNI FROM PLAN_DOCENTE WHERE FF IS NULL));
+
+P                                                                               
+------------------------------------------------------------                    
+CARMEN                                                                          
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> SELECT A FROM ASIGNATURA WHERE T='GII';
+
+A                                                                               
+--------------------------------------------------                              
+BASES DE DATOS                                                                  
+INTELIGENCIA ARTIFICIAL                                                         
+INFORMATICA BASICA                                                              
+ALGEBRA                                                                         
+CALCULO                                                                         
+OPTIMIZACION                                                                    
+GESTION DE RIESGOS                                                              
+
+7 rows selected.
+
+SQL> SELECT AR,A FROM ASIGNATURA,AREA WHERE ASIGNATURA.CAR=AREA.CAR;
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+ALGEBRA                                                                         
+ALGEBRA                                                                         
+                                                                                
+ANALISIS MATEMATICO                                                             
+ANALISIS COMPLEJO                                                               
+                                                                                
+ASTRONOMIA Y ASTROFISICA                                                        
+ASTRONOMIA                                                                      
+                                                                                
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+GESTION DE RIESGOS                                                              
+                                                                                
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+INTELIGENCIA ARTIFICIAL                                                         
+                                                                                
+DIDACTICA DE LA MATEMATICA                                                      
+ENSENANZA DE LA MATEMATICA                                                      
+                                                                                
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+ESTADISTICA E INVESTIGACION OPERATIVA                                           
+OPTIMIZACION                                                                    
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+INFORMATICA BASICA                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+MINERIA DE DATOS                                                                
+                                                                                
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+ALMACENES DE DATOS                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+BASES DE DATOS                                                                  
+                                                                                
+MATEMATICA APLICADA                                                             
+CALCULO                                                                         
+                                                                                
+
+12 rows selected.
+
+SQL> SELECT D,AR FROM DEPARTAMENTO, AREA WHERE DEPARTAMENTO.CD=AREA.CD ORDER BY D,AR;
+
+D                                                                               
+------------------------------------------------------------                    
+AR                                                                              
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANALISIS MATEMATICO                                                             
+                                                                                
+ANALISIS MATEMATICO                                                             
+DIDACTICA DE LA MATEMATICA                                                      
+                                                                                
+ANALISIS MATEMATICO                                                             
+MATEMATICA APLICADA                                                             
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+AR                                                                              
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ASTRONOMIA Y ASTROFISICA                                                        
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+ESTADISTICA E INVESTIGACION OPERATIVA                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+AR                                                                              
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+ALGEBRA                                                                         
+                                                                                
+
+8 rows selected.
+
+SQL> SELECT D,P FROM DEPARTAMENTO,AREA,PROFESOR;
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+JUAN                                                                            
+                                                                                
+ANALISIS MATEMATICO                                                             
+JUAN                                                                            
+                                                                                
+ANALISIS MATEMATICO                                                             
+JUAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+JUAN                                                                            
+                                                                                
+ANALISIS MATEMATICO                                                             
+JUAN                                                                            
+                                                                                
+ANALISIS MATEMATICO                                                             
+JUAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+JUAN                                                                            
+                                                                                
+ANALISIS MATEMATICO                                                             
+JUAN                                                                            
+                                                                                
+ANALISIS MATEMATICO                                                             
+CARLOS                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+CARLOS                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+CARLOS                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+CARLOS                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+CARLOS                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+CARLOS                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+CARLOS                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+CARLOS                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+PEDRO                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+PEDRO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+PEDRO                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+PEDRO                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+PEDRO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+PEDRO                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+PEDRO                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+PEDRO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+MARIA                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+MARIA                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+MARIA                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+MARIA                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+MARIA                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+MARIA                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+MARIA                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+MARIA                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+IVAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+IVAN                                                                            
+                                                                                
+ANALISIS MATEMATICO                                                             
+IVAN                                                                            
+                                                                                
+ANALISIS MATEMATICO                                                             
+IVAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+IVAN                                                                            
+                                                                                
+ANALISIS MATEMATICO                                                             
+IVAN                                                                            
+                                                                                
+ANALISIS MATEMATICO                                                             
+IVAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+IVAN                                                                            
+                                                                                
+ANALISIS MATEMATICO                                                             
+CARMEN                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+CARMEN                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+CARMEN                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+CARMEN                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+CARMEN                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+CARMEN                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+CARMEN                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+CARMEN                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+MARIO                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+MARIO                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+MARIO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+MARIO                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+MARIO                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+MARIO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+MARIO                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+MARIO                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+FRANCISCO                                                                       
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+FRANCISCO                                                                       
+                                                                                
+ANALISIS MATEMATICO                                                             
+FRANCISCO                                                                       
+                                                                                
+ANALISIS MATEMATICO                                                             
+FRANCISCO                                                                       
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+FRANCISCO                                                                       
+                                                                                
+ANALISIS MATEMATICO                                                             
+FRANCISCO                                                                       
+                                                                                
+ANALISIS MATEMATICO                                                             
+FRANCISCO                                                                       
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+FRANCISCO                                                                       
+                                                                                
+ANALISIS MATEMATICO                                                             
+ANGELA                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+ANGELA                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANGELA                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+ANGELA                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+ANGELA                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANGELA                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+ANGELA                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+ANGELA                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+DAVID                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+DAVID                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+DAVID                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+DAVID                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+DAVID                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+DAVID                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+DAVID                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+DAVID                                                                           
+                                                                                
+ANALISIS MATEMATICO                                                             
+SOLEDAD                                                                         
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+SOLEDAD                                                                         
+                                                                                
+ANALISIS MATEMATICO                                                             
+SOLEDAD                                                                         
+                                                                                
+ANALISIS MATEMATICO                                                             
+SOLEDAD                                                                         
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+SOLEDAD                                                                         
+                                                                                
+ANALISIS MATEMATICO                                                             
+SOLEDAD                                                                         
+                                                                                
+ANALISIS MATEMATICO                                                             
+SOLEDAD                                                                         
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+SOLEDAD                                                                         
+                                                                                
+ANALISIS MATEMATICO                                                             
+JOSE MANUEL                                                                     
+                                                                                
+ANALISIS MATEMATICO                                                             
+JOSE MANUEL                                                                     
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+JOSE MANUEL                                                                     
+                                                                                
+ANALISIS MATEMATICO                                                             
+JOSE MANUEL                                                                     
+                                                                                
+ANALISIS MATEMATICO                                                             
+JOSE MANUEL                                                                     
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+JOSE MANUEL                                                                     
+                                                                                
+ANALISIS MATEMATICO                                                             
+JOSE MANUEL                                                                     
+                                                                                
+ANALISIS MATEMATICO                                                             
+JOSE MANUEL                                                                     
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+JUAN                                                                            
+                                                                                
+ASTROFISICA                                                                     
+JUAN                                                                            
+                                                                                
+ASTROFISICA                                                                     
+JUAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+JUAN                                                                            
+                                                                                
+ASTROFISICA                                                                     
+JUAN                                                                            
+                                                                                
+ASTROFISICA                                                                     
+JUAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+JUAN                                                                            
+                                                                                
+ASTROFISICA                                                                     
+JUAN                                                                            
+                                                                                
+ASTROFISICA                                                                     
+CARLOS                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+CARLOS                                                                          
+                                                                                
+ASTROFISICA                                                                     
+CARLOS                                                                          
+                                                                                
+ASTROFISICA                                                                     
+CARLOS                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+CARLOS                                                                          
+                                                                                
+ASTROFISICA                                                                     
+CARLOS                                                                          
+                                                                                
+ASTROFISICA                                                                     
+CARLOS                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+CARLOS                                                                          
+                                                                                
+ASTROFISICA                                                                     
+PEDRO                                                                           
+                                                                                
+ASTROFISICA                                                                     
+PEDRO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+PEDRO                                                                           
+                                                                                
+ASTROFISICA                                                                     
+PEDRO                                                                           
+                                                                                
+ASTROFISICA                                                                     
+PEDRO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+PEDRO                                                                           
+                                                                                
+ASTROFISICA                                                                     
+PEDRO                                                                           
+                                                                                
+ASTROFISICA                                                                     
+PEDRO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+MARIA                                                                           
+                                                                                
+ASTROFISICA                                                                     
+MARIA                                                                           
+                                                                                
+ASTROFISICA                                                                     
+MARIA                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+MARIA                                                                           
+                                                                                
+ASTROFISICA                                                                     
+MARIA                                                                           
+                                                                                
+ASTROFISICA                                                                     
+MARIA                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+MARIA                                                                           
+                                                                                
+ASTROFISICA                                                                     
+MARIA                                                                           
+                                                                                
+ASTROFISICA                                                                     
+IVAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+IVAN                                                                            
+                                                                                
+ASTROFISICA                                                                     
+IVAN                                                                            
+                                                                                
+ASTROFISICA                                                                     
+IVAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+IVAN                                                                            
+                                                                                
+ASTROFISICA                                                                     
+IVAN                                                                            
+                                                                                
+ASTROFISICA                                                                     
+IVAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+IVAN                                                                            
+                                                                                
+ASTROFISICA                                                                     
+CARMEN                                                                          
+                                                                                
+ASTROFISICA                                                                     
+CARMEN                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+CARMEN                                                                          
+                                                                                
+ASTROFISICA                                                                     
+CARMEN                                                                          
+                                                                                
+ASTROFISICA                                                                     
+CARMEN                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+CARMEN                                                                          
+                                                                                
+ASTROFISICA                                                                     
+CARMEN                                                                          
+                                                                                
+ASTROFISICA                                                                     
+CARMEN                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+MARIO                                                                           
+                                                                                
+ASTROFISICA                                                                     
+MARIO                                                                           
+                                                                                
+ASTROFISICA                                                                     
+MARIO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+MARIO                                                                           
+                                                                                
+ASTROFISICA                                                                     
+MARIO                                                                           
+                                                                                
+ASTROFISICA                                                                     
+MARIO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+MARIO                                                                           
+                                                                                
+ASTROFISICA                                                                     
+MARIO                                                                           
+                                                                                
+ASTROFISICA                                                                     
+FRANCISCO                                                                       
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+FRANCISCO                                                                       
+                                                                                
+ASTROFISICA                                                                     
+FRANCISCO                                                                       
+                                                                                
+ASTROFISICA                                                                     
+FRANCISCO                                                                       
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+FRANCISCO                                                                       
+                                                                                
+ASTROFISICA                                                                     
+FRANCISCO                                                                       
+                                                                                
+ASTROFISICA                                                                     
+FRANCISCO                                                                       
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+FRANCISCO                                                                       
+                                                                                
+ASTROFISICA                                                                     
+ANGELA                                                                          
+                                                                                
+ASTROFISICA                                                                     
+ANGELA                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ANGELA                                                                          
+                                                                                
+ASTROFISICA                                                                     
+ANGELA                                                                          
+                                                                                
+ASTROFISICA                                                                     
+ANGELA                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+ANGELA                                                                          
+                                                                                
+ASTROFISICA                                                                     
+ANGELA                                                                          
+                                                                                
+ASTROFISICA                                                                     
+ANGELA                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+DAVID                                                                           
+                                                                                
+ASTROFISICA                                                                     
+DAVID                                                                           
+                                                                                
+ASTROFISICA                                                                     
+DAVID                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+DAVID                                                                           
+                                                                                
+ASTROFISICA                                                                     
+DAVID                                                                           
+                                                                                
+ASTROFISICA                                                                     
+DAVID                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+DAVID                                                                           
+                                                                                
+ASTROFISICA                                                                     
+DAVID                                                                           
+                                                                                
+ASTROFISICA                                                                     
+SOLEDAD                                                                         
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+SOLEDAD                                                                         
+                                                                                
+ASTROFISICA                                                                     
+SOLEDAD                                                                         
+                                                                                
+ASTROFISICA                                                                     
+SOLEDAD                                                                         
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+SOLEDAD                                                                         
+                                                                                
+ASTROFISICA                                                                     
+SOLEDAD                                                                         
+                                                                                
+ASTROFISICA                                                                     
+SOLEDAD                                                                         
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+SOLEDAD                                                                         
+                                                                                
+ASTROFISICA                                                                     
+JOSE MANUEL                                                                     
+                                                                                
+ASTROFISICA                                                                     
+JOSE MANUEL                                                                     
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+JOSE MANUEL                                                                     
+                                                                                
+ASTROFISICA                                                                     
+JOSE MANUEL                                                                     
+                                                                                
+ASTROFISICA                                                                     
+JOSE MANUEL                                                                     
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+JOSE MANUEL                                                                     
+                                                                                
+ASTROFISICA                                                                     
+JOSE MANUEL                                                                     
+                                                                                
+ASTROFISICA                                                                     
+JOSE MANUEL                                                                     
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JUAN                                                                            
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JUAN                                                                            
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JUAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JUAN                                                                            
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JUAN                                                                            
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JUAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JUAN                                                                            
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JUAN                                                                            
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARLOS                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARLOS                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARLOS                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARLOS                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARLOS                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARLOS                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARLOS                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARLOS                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+PEDRO                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+PEDRO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+PEDRO                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+PEDRO                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+PEDRO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+PEDRO                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+PEDRO                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+PEDRO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIA                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIA                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIA                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIA                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIA                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIA                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIA                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIA                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+IVAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+IVAN                                                                            
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+IVAN                                                                            
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+IVAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+IVAN                                                                            
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+IVAN                                                                            
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+IVAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+IVAN                                                                            
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARMEN                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARMEN                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARMEN                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARMEN                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARMEN                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARMEN                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARMEN                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARMEN                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIO                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIO                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIO                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIO                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIO                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIO                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+FRANCISCO                                                                       
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+FRANCISCO                                                                       
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+FRANCISCO                                                                       
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+FRANCISCO                                                                       
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+FRANCISCO                                                                       
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+FRANCISCO                                                                       
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+FRANCISCO                                                                       
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+FRANCISCO                                                                       
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+ANGELA                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+ANGELA                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+ANGELA                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+ANGELA                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+ANGELA                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+ANGELA                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+ANGELA                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+ANGELA                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+DAVID                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+DAVID                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+DAVID                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+DAVID                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+DAVID                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+DAVID                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+DAVID                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+DAVID                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+SOLEDAD                                                                         
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+SOLEDAD                                                                         
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+SOLEDAD                                                                         
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+SOLEDAD                                                                         
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+SOLEDAD                                                                         
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+SOLEDAD                                                                         
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+SOLEDAD                                                                         
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+SOLEDAD                                                                         
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JOSE MANUEL                                                                     
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JOSE MANUEL                                                                     
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JOSE MANUEL                                                                     
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JOSE MANUEL                                                                     
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JOSE MANUEL                                                                     
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JOSE MANUEL                                                                     
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JOSE MANUEL                                                                     
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JOSE MANUEL                                                                     
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+JUAN                                                                            
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+JUAN                                                                            
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+JUAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+JUAN                                                                            
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+JUAN                                                                            
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+JUAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+JUAN                                                                            
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+JUAN                                                                            
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+CARLOS                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+CARLOS                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+CARLOS                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+CARLOS                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+CARLOS                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+CARLOS                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+CARLOS                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+CARLOS                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+PEDRO                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+PEDRO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+PEDRO                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+PEDRO                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+PEDRO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+PEDRO                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+PEDRO                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+PEDRO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MARIA                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+MARIA                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+MARIA                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MARIA                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+MARIA                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+MARIA                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MARIA                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+MARIA                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+IVAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+IVAN                                                                            
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+IVAN                                                                            
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+IVAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+IVAN                                                                            
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+IVAN                                                                            
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+IVAN                                                                            
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+IVAN                                                                            
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+CARMEN                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+CARMEN                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+CARMEN                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+CARMEN                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+CARMEN                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+CARMEN                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+CARMEN                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+CARMEN                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MARIO                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+MARIO                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+MARIO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MARIO                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+MARIO                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+MARIO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+MARIO                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+MARIO                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+FRANCISCO                                                                       
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+FRANCISCO                                                                       
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+FRANCISCO                                                                       
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+FRANCISCO                                                                       
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+FRANCISCO                                                                       
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+FRANCISCO                                                                       
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+FRANCISCO                                                                       
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+FRANCISCO                                                                       
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+ANGELA                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+ANGELA                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+ANGELA                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+ANGELA                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+ANGELA                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+ANGELA                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+ANGELA                                                                          
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+ANGELA                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+DAVID                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+DAVID                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+DAVID                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+DAVID                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+DAVID                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+DAVID                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+DAVID                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+DAVID                                                                           
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+SOLEDAD                                                                         
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+SOLEDAD                                                                         
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+SOLEDAD                                                                         
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+SOLEDAD                                                                         
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+SOLEDAD                                                                         
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+SOLEDAD                                                                         
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+SOLEDAD                                                                         
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+SOLEDAD                                                                         
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+JOSE MANUEL                                                                     
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+JOSE MANUEL                                                                     
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+JOSE MANUEL                                                                     
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+JOSE MANUEL                                                                     
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+JOSE MANUEL                                                                     
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+MATEMATICA FUNDAMENTAL                                                          
+JOSE MANUEL                                                                     
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+JOSE MANUEL                                                                     
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+JOSE MANUEL                                                                     
+                                                                                
+
+384 rows selected.
+
+SQL> SELECT D,P FROM DEPARTAMENTO,AREA,PROFESOR WHERE DEPARTAMENTO.CD = AREA.CD AND AREA.CAR=PROFESOR.CAR ORDER BY D,P;
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANGELA                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+FRANCISCO                                                                       
+                                                                                
+ANALISIS MATEMATICO                                                             
+MARIO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+CARMEN                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+CARLOS                                                                          
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+DAVID                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JOSE MANUEL                                                                     
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+JUAN                                                                            
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+MARIA                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+PEDRO                                                                           
+                                                                                
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                               
+SOLEDAD                                                                         
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+IVAN                                                                            
+                                                                                
+
+12 rows selected.
+
+SQL> COMMIT WORK
+  2  ;
+
+Commit complete.
+
+SQL> SPOOL OFF
