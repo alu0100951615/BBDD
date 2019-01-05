@@ -2,76 +2,547 @@ SQL> SELECT SYSDATE FROM DUAL;
 
 SYSDATE                                                                         
 ---------                                                                       
-21-NOV-18                                                                       
+05-JAN-19                                                                       
 
-SQL> SELECT TO_CHAR(SYSDATE,'HH') FROM DUAL;
-
-TO                                                                              
---                                                                              
-01                                                                              
-
-SQL> SELECT TO_CHAR(SYSDATE,'HH:MI:SS') FROM DUAL;
+SQL> SELECT TO_CHAR(SYSDATE, 'HH:MM:SS') FROM DUAL;
 
 TO_CHAR(                                                                        
 --------                                                                        
-01:26:46                                                                        
+08:01:46                                                                        
 
 SQL> SELECT TO_CHAR(SYSDATE,'DY:DD:MM:YYYY') FROM DUAL;
 
 TO_CHAR(SYSDATE,'DY:DD:                                                         
 -----------------------                                                         
-WED:21:11:2018                                                                  
+SAT:05:01:2019                                                                  
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> SELECT TO_CHAR(SYSDATE,'HH:MI:SS') FROM DUAL;
+
+TO_CHAR(                                                                        
+--------                                                                        
+08:26:36                                                                        
 
 SQL> SELECT TO_CHAR(SYSDATE,'HH24:MI:SS') FROM DUAL;
 
 TO_CHAR(                                                                        
 --------                                                                        
-13:38:38                                                                        
+20:27:25                                                                        
 
-SQL> SELECT(SELECT SYSDATE) -FI FROM PLAN_DOCENTE IN DNI=8888 AND CAS=11;
-SELECT(SELECT SYSDATE) -FI FROM PLAN_DOCENTE IN DNI=8888 AND CAS=11
-                     *
-ERROR at line 1:
-ORA-00923: FROM keyword not found where expected 
-
-
-SQL> SELECT(SELECT SYSDATE)-FI FROM PLAN_DOCENTE IN DNI=8888 AND CAS=11;
-SELECT(SELECT SYSDATE)-FI FROM PLAN_DOCENTE IN DNI=8888 AND CAS=11
-                     *
-ERROR at line 1:
-ORA-00923: FROM keyword not found where expected 
-
-
-SQL> SELECT(SELECT SYSDATE)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11;
-SELECT(SELECT SYSDATE)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11
-                     *
-ERROR at line 1:
-ORA-00923: FROM keyword not found where expected 
-
-
-SQL> SELECT (SELECT SYSDATE)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11;
-SELECT (SELECT SYSDATE)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11
-                      *
-ERROR at line 1:
-ORA-00923: FROM keyword not found where expected 
-
-
-SQL> SELECT (SELECT SYSDATE)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11;
-SELECT (SELECT SYSDATE)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11
-                      *
-ERROR at line 1:
-ORA-00923: FROM keyword not found where expected 
-
-
-SQL> SELECT (SELECT SYSDATE FROM DUAL)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11;
+SQL> SELECT(SELECT SYSDATE FROM DUAL)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11;
 
 (SELECTSYSDATEFROMDUAL)-FI                                                      
 --------------------------                                                      
-                3368.57366                                                      
+                3413.85463                                                      
 
-SQL> COMMIT WORK
+SQL> SELECT(SELECT SYSDATE FROM FF)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11;
+SELECT(SELECT SYSDATE FROM FF)-FI FROM PLAN_DOCENTE WHERE DNI=8888 AND CAS=11
+                           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN ( SELECT DNI FROM PLAN_DOCENTE WHERE FF-FI>365);
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+MARIA                                                                           
+CARMEN                                                                          
+DAVID                                                                           
+
+SQL> SELECTCOUNT (P) FROM PROFESOR WHERE CAR IN ( SELECT CAR FROM AREA WHERE CD = 2);
+SP2-0734: unknown command beginning "SELECTCOUN..." - rest of line ignored.
+SQL> SELECT COUNT (P) FROM PROFESOR WHERE CAR IN ( SELECT CAR FROM AREA WHERE CD = 2);
+
+  COUNT(P)                                                                      
+----------                                                                      
+         1                                                                      
+
+SQL> SELECT COUNT (P) FROM PROFESOR WHERE CAR IN ( SELECT CAR FROM AREA WHERE CD IN (SELECT CD FROM DEPARTAMENTO WHERE D = 'ASTROFISICA');
+SELECT COUNT (P) FROM PROFESOR WHERE CAR IN ( SELECT CAR FROM AREA WHERE CD IN (SELECT CD FROM DEPARTAMENTO WHERE D = 'ASTROFISICA')
+                                                                                                                                   *
+ERROR at line 1:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT COUNT (P) FROM PROFESOR WHERE CAR IN ( SELECT CAR FROM AREA WHERE CD IN (SELECT CD FROM DEPARTAMENTO WHERE D = 'ASTROFISICA'));
+
+  COUNT(P)                                                                      
+----------                                                                      
+         1                                                                      
+
+SQL> SELECT D
   2  ;
+
+*
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT D , COUNT (P) FROM DEPARTAMENTO, PROFESOR;
+SELECT D , COUNT (P) FROM DEPARTAMENTO, PROFESOR
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> SELECT D, COUNT (P) FROM DEPARTAMENTO, PROFESOR;
+SELECT D, COUNT (P) FROM DEPARTAMENTO, PROFESOR
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> SELECT D, COUNT (P) FROM DEPARTAMENTO, PROFESOR, AREA;
+SELECT D, COUNT (P) FROM DEPARTAMENTO, PROFESOR, AREA
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> SELECT D, COUNT(P) FROM DEPARTAMENTO, PROFESOR;
+SELECT D, COUNT(P) FROM DEPARTAMENTO, PROFESOR
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> SELECT D, COUNT(P) FROM DEPARTAMENTO, PROFESOR, AREA, WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR = AREA.CAR);
+SELECT D, COUNT(P) FROM DEPARTAMENTO, PROFESOR, AREA, WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR = AREA.CAR)
+                                                      *
+ERROR at line 1:
+ORA-00903: invalid table name 
+
+
+SQL> SELECT D, COUNT(P) FROM DEPARTAMENTO, PROFESOR, AREA WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR = AREA.CAR);
+SELECT D, COUNT(P) FROM DEPARTAMENTO, PROFESOR, AREA WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR = AREA.CAR)
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> SELECT D, COUNT(DNI) FROM DEPARTAMENTO, PROFESOR, AREA WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR = AREA.CAR);
+SELECT D, COUNT(DNI) FROM DEPARTAMENTO, PROFESOR, AREA WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR = AREA.CAR)
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> SELECT D, COUNT(P) FROM DEPARTAMENTO, PROFESOR, AREA WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR = AREA.CAR);
+SELECT D, COUNT(P) FROM DEPARTAMENTO, PROFESOR, AREA WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR = AREA.CAR)
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> SELECT D, COUNT(P)
+  2  FROM DEPARTAMENTO,PROFESOR,AREA
+  3  WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR=AREA.CAR)
+  4  ;
+SELECT D, COUNT(P)
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> SELECT D, COUNT(P)
+  2  FROM DEPARTAMENTO,PROFESOR,AREA
+  3  WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR=AREA.CAR)
+  4  GROUP BY D;
+
+D                                                              COUNT(P)         
+------------------------------------------------------------ ----------         
+ASTROFISICA                                                           1         
+ANALISIS MATEMATICO                                                   3         
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                     7         
+MATEMATICA FUNDAMENTAL                                                1         
+
+SQL> SELECT D, COUNT(P)
+  2  FROM DEPARTAMENTO,PROFESOR,AREA
+  3  WHERE (DEPARTAMENTO.CD=AREA.CD AND PROFESOR.CAR=AREA.CAR)
+  4  GROUP BY D ORDER BY D;
+
+D                                                              COUNT(P)         
+------------------------------------------------------------ ----------         
+ANALISIS MATEMATICO                                                   3         
+ASTROFISICA                                                           1         
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                     7         
+MATEMATICA FUNDAMENTAL                                                1         
+
+SQL> SELECTD, COUNT(T)
+SP2-0734: unknown command beginning "SELECTD, C..." - rest of line ignored.
+SQL> SELECT, COUNT(T)
+  2  FROM DEPARTAMENTO, AREA,ASIGNATURA
+  3  WHERE(DEPARTAMENTO.D='ESTADC
+  4  
+SQL> SELECT, COUNT(T)
+  2  FROM DEPARTAMENTO, AREA,ASIGNATURA
+  3  WHERE(DEPARTAMENTO.CD=3 AND AREA.CAR=;
+SELECT, COUNT(T)
+      *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> SELECT COUNT(T)
+  2  FROM ASIGNATURA WHERE CAS IN
+  3  (SELECT CAS FROM AREA, DEPARTAMENTO WHERE AREA.CD=DEPARTAMENTO.CD AND D=3);
+(SELECT CAS FROM AREA, DEPARTAMENTO WHERE AREA.CD=DEPARTAMENTO.CD AND D=3)
+                                                                      *
+ERROR at line 3:
+ORA-01722: invalid number 
+
+
+SQL> (SELECT CAS FROM AREA, DEPARTAMENTO WHERE AREA.CD=DEPARTAMENTO.CD AND CD=3);
+(SELECT CAS FROM AREA, DEPARTAMENTO WHERE AREA.CD=DEPARTAMENTO.CD AND CD=3)
+                                                                      *
+ERROR at line 1:
+ORA-00918: column ambiguously defined 
+
+
+SQL> SELECT COUNT(T)
+  2  FROM ASIGNATURA WHERE CAS IN
+  3  (SELECT CAS FROM AREA, DEPARTAMENTO WHERE AREA.CD=DEPARTAMENTO.CD AND CD=3);
+(SELECT CAS FROM AREA, DEPARTAMENTO WHERE AREA.CD=DEPARTAMENTO.CD AND CD=3)
+                                                                      *
+ERROR at line 3:
+ORA-00918: column ambiguously defined 
+
+
+SQL> SELECT COUNT( DISTINCT(T))
+  2  FROM ASIGNATURA WHERE CAS IN
+  3  (SELECT CAS FROM AREA, DEPARTAMENTO WHERE AREA.CD=DEPARTAMENTO.CD AND CD=3);
+(SELECT CAS FROM AREA, DEPARTAMENTO WHERE AREA.CD=DEPARTAMENTO.CD AND CD=3)
+                                                                      *
+ERROR at line 3:
+ORA-00918: column ambiguously defined 
+
+
+SQL> SELECT COUNT( DISTINCT(T)) Titulacion
+  2  FROM ASIGNATURA WHERE CAS IN
+  3  (SELECT CAS FROM AREA, DEPARTAMENTO WHERE AREA.CD=DEPARTAMENTO.CD AND CD=3);
+(SELECT CAS FROM AREA, DEPARTAMENTO WHERE AREA.CD=DEPARTAMENTO.CD AND CD=3)
+                                                                      *
+ERROR at line 3:
+ORA-00918: column ambiguously defined 
+
+
+SQL> SELECT COUNT(DISTINCT(T)) Titulacion
+  2  FROM ASIGNATURA WHERE CAS IN
+  3  (SELECT CAS FROM AREA,DEPARTAMENTO
+  4  WHERE AREA.CD=DEPARTAMENTO.CD AND D='ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION');
+
+TITULACION                                                                      
+----------                                                                      
+         4                                                                      
+
+SQL> SELECT COUNT(P) WHERE CAR IN(SELECT CAR FROM AREA WHERE AR LIKE 'A%');
+SELECT COUNT(P) WHERE CAR IN(SELECT CAR FROM AREA WHERE AR LIKE 'A%')
+                *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT COUNT(P) FROM PROFESOR WHERE CAR IN(SELECT CAR FROM AREA WHERE AR LIKE 'A%');
+
+  COUNT(P)                                                                      
+----------                                                                      
+         3                                                                      
+
+SQL> SELECT COUNT(P) FROM PROFESOR, AREA WHERE PROFESOR.CAR=AREA.CAR AND AR LIKE 'A%');
+SELECT COUNT(P) FROM PROFESOR, AREA WHERE PROFESOR.CAR=AREA.CAR AND AR LIKE 'A%')
+                                                                                *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT COUNT(P) FROM PROFESOR, AREA WHERE PROFESOR.CAR=AREA.CAR AND AR LIKE 'A%';
+
+  COUNT(P)                                                                      
+----------                                                                      
+         3                                                                      
+
+SQL> SELECT T, COUNT (CAS)
+  2  FROM ASIGNATURA
+  3  ;
+SELECT T, COUNT (CAS)
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> SELECT T, COUNT (CAS)
+  2  FROM ASIGNATURA
+  3  GROUP BY T ORDER BY T;
+
+T    COUNT(CAS)                                                                 
+---- ----------                                                                 
+GF            1                                                                 
+GII           7                                                                 
+GM            2                                                                 
+MII           2                                                                 
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CT IN (SELECT MAX(CT) FROM ASIGNATURA);
+
+A                                                                               
+--------------------------------------------------                              
+ENSENANZA DE LA MATEMATICA                                                      
+
+SQL> SELECT A FROM ASIGNATURA
+  2  WHERE CT IN(SELECT MIN(CT) FROM ASIGNATURA);
+
+A                                                                               
+--------------------------------------------------                              
+INTELIGENCIA ARTIFICIAL                                                         
+ALMACENES DE DATOS                                                              
+MINERIA DE DATOS                                                                
+
+SQL> COMMIT WORK;
 
 Commit complete.
 
-SQL> SPOOL OFF
+SQL> SELECT A FROM ASIGNATURA;
+
+A                                                                               
+--------------------------------------------------                              
+BASES DE DATOS                                                                  
+INTELIGENCIA ARTIFICIAL                                                         
+ALMACENES DE DATOS                                                              
+MINERIA DE DATOS                                                                
+INFORMATICA BASICA                                                              
+ALGEBRA                                                                         
+CALCULO                                                                         
+OPTIMIZACION                                                                    
+GESTION DE RIESGOS                                                              
+ASTRONOMIA                                                                      
+ENSENANZA DE LA MATEMATICA                                                      
+
+A                                                                               
+--------------------------------------------------                              
+ANALISIS COMPLEJO                                                               
+
+12 rows selected.
+
+SQL> SELECT A , CT , CP, CL FROM ASIGNATURA;
+
+A                                                          CT         CP        
+-------------------------------------------------- ---------- ----------        
+        CL                                                                      
+----------                                                                      
+BASES DE DATOS                                              3        1.5        
+       1.5                                                                      
+                                                                                
+INTELIGENCIA ARTIFICIAL                                   1.5        1.5        
+         3                                                                      
+                                                                                
+ALMACENES DE DATOS                                        1.5          0        
+       1.5                                                                      
+                                                                                
+
+A                                                          CT         CP        
+-------------------------------------------------- ---------- ----------        
+        CL                                                                      
+----------                                                                      
+MINERIA DE DATOS                                          1.5          0        
+       1.5                                                                      
+                                                                                
+INFORMATICA BASICA                                          3        1.5        
+       1.5                                                                      
+                                                                                
+ALGEBRA                                                     3          3        
+         0                                                                      
+                                                                                
+
+A                                                          CT         CP        
+-------------------------------------------------- ---------- ----------        
+        CL                                                                      
+----------                                                                      
+CALCULO                                                     3          3        
+         0                                                                      
+                                                                                
+OPTIMIZACION                                                3        1.5        
+       1.5                                                                      
+                                                                                
+GESTION DE RIESGOS                                          3          0        
+         3                                                                      
+                                                                                
+
+A                                                          CT         CP        
+-------------------------------------------------- ---------- ----------        
+        CL                                                                      
+----------                                                                      
+ASTRONOMIA                                                  3        1.5        
+       1.5                                                                      
+                                                                                
+ENSENANZA DE LA MATEMATICA                                  6          0        
+         0                                                                      
+                                                                                
+ANALISIS COMPLEJO                                         4.5          3        
+         0                                                                      
+                                                                                
+
+12 rows selected.
+
+SQL> SELECT A , CT + CP+ CL FROM ASIGNATURA;
+
+A                                                    CT+CP+CL                   
+-------------------------------------------------- ----------                   
+BASES DE DATOS                                              6                   
+INTELIGENCIA ARTIFICIAL                                     6                   
+ALMACENES DE DATOS                                          3                   
+MINERIA DE DATOS                                            3                   
+INFORMATICA BASICA                                          6                   
+ALGEBRA                                                     6                   
+CALCULO                                                     6                   
+OPTIMIZACION                                                6                   
+GESTION DE RIESGOS                                          6                   
+ASTRONOMIA                                                  6                   
+ENSENANZA DE LA MATEMATICA                                  6                   
+
+A                                                    CT+CP+CL                   
+-------------------------------------------------- ----------                   
+ANALISIS COMPLEJO                                         7.5                   
+
+12 rows selected.
+
+SQL> SELECT A FROM ASIGNATURA WHERE CT+CP+CL IN (SELECT MAX(CT+CP+CL) FROM ASIGNATURA);
+
+A                                                                               
+--------------------------------------------------                              
+ANALISIS COMPLEJO                                                               
+
+SQL> SELECT A FROM ASIGNATURA WHERE CT+CP+CL IN (SELECT MIN(CT+CP+CL) FROM ASIGNATURA);
+
+A                                                                               
+--------------------------------------------------                              
+ALMACENES DE DATOS                                                              
+MINERIA DE DATOS                                                                
+
+SQL> SELECT AR
+  2  FROM AREA, ASIGNATURA
+  3  
+SQL> SELECT AR FROM AREA WHERE CAR IN(SELECT CAR FROM ASIGNATRUA WHERE CT+CP+CL IN(SELECT MAX(CT+CP+CL)FROM ASIGNATURA));
+SELECT AR FROM AREA WHERE CAR IN(SELECT CAR FROM ASIGNATRUA WHERE CT+CP+CL IN(SELECT MAX(CT+CP+CL)FROM ASIGNATURA))
+                                                 *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT AR FROM AREA WHERE CAR IN(SELECT CAR FROM ASIGNATURA WHERE CT+CP+CL IN(SELECT MAX(CT+CP+CL)FROM ASIGNATURA));
+
+AR                                                                              
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+
+SQL> SELECT P FROM PROFESOR
+  2  
+SQL> 
+SQL> SELECT COUNT(DISTINCT(CAS)) FROM PLAN_DOCENTE WHERE DNI='1111';
+
+COUNT(DISTINCT(CAS))                                                            
+--------------------                                                            
+                   1                                                            
+
+SQL> SELECT COUNT(DISTINCT(CAS)) asignaturas FROM PLAN_DOCENTE WHERE DNI='1111';
+
+ASIGNATURAS                                                                     
+-----------                                                                     
+          1                                                                     
+
+SQL> SELECT SUM(CTA+CPA+CLA) creditos FROM PLAN_DOCENTE WHERE DNI='1111';
+
+  CREDITOS                                                                      
+----------                                                                      
+         9                                                                      
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE(CTA+CPA+CLA)IN (SELECT MAX(CTA + CPA+CLA)FROM PLAN_DOCENTE);
+SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE(CTA+CPA+CLA)IN (SELECT MAX(CTA + CPA+CLA)FROM PLAN_DOCENTE)
+                                                                                                                                  *
+ERROR at line 1:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE(CTA+CPA+CLA)IN (SELECT MAX(CTA + CPA+CLA)FROM PLAN_DOCENTE))
+  2  ;
+
+P                                                                               
+------------------------------------------------------------                    
+MARIO                                                                           
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE(CTA+CPA+CLA)IN (SELECT MAX(CTA + CPA+CLA)FROM PLAN_DOCENTE)) AND (FF IS NULL);
+SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE(CTA+CPA+CLA)IN (SELECT MAX(CTA + CPA+CLA)FROM PLAN_DOCENTE)) AND (FF IS NULL)
+                                                                                                                                          *
+ERROR at line 1:
+ORA-00904: "FF": invalid identifier 
+
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE(CTA+CPA+CLA)IN (SELECT MAX(CTA + CPA+CLA)FROM PLAN_DOCENTE) AND (FF IS NULL));
+
+P                                                                               
+------------------------------------------------------------                    
+MARIO                                                                           
+
+SQL> SELECT AVG(COUNT(A))
+  2  FROM ASIGNATURA
+  3  GROUP BY CAR;
+
+AVG(COUNT(A))                                                                   
+-------------                                                                   
+          1.5                                                                   
+
+SQL> SELECT AVG(COUNT(P))
+  2  FROM PROFESOR
+  3  , DEPARTAMENTO
+  4  GROUP BY CD;
+
+AVG(COUNT(P))                                                                   
+-------------                                                                   
+           12                                                                   
+
+SQL> SELECT AVG(COUNT(P))
+  2  FROM PROFESOR, AREA
+  3  WHERE PROFESOR.CAR = AREA.CAR
+  4  GROUP BY CD;
+
+AVG(COUNT(P))                                                                   
+-------------                                                                   
+            3                                                                   
+
+SQL> SELECT AR FROM AREA
+  2  WHERE CAR IN (SELECT CAR FROM ASIGNATURA GROUP BY CAR HAVING COUNT(CAR) > 3);
+
+AR                                                                              
+------------------------------------------------------------                    
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+
+SQL> SELECT AR FROM AREA
+  2  WHERE CAR IN (SELECT CAR FROM ASIGNATURA GROUP BY CAR HAVING COUNT(CAR) > 6);
+
+no rows selected
+
+SQL> SELECT D FROM DEPARTAMENTO, AREA, PROFESOR
+  2  WHERE PROFESOR.CAR=AREA.CAR AND AREA.CD=DEPARTAMENTO.CD
+  3  GROUP BY D HAVING COUNT(DNI)=(SELECT MIN(COUNT(DNI))
+  4  FROM DEPARTAMENTO,AREA,PROFESOR
+  5  WHERE PROFESOR.CAR=AREA.CAR AND AREA.CD=DEPARTAMENTO.CD
+  6  GROUP BY D);
+
+D                                                                               
+------------------------------------------------------------                    
+ASTROFISICA                                                                     
+MATEMATICA FUNDAMENTAL                                                          
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> SPOOL OFF;
