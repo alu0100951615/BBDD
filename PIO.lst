@@ -1,0 +1,304 @@
+SQL> DECLARE
+  2  i NUMBER := 1;
+  3  i3 NUMBER;
+  4  BEGIN
+  5  WHILE i <=10 LOOP
+  6  i3 = i**3;
+  7  DBMS_OUTPUT.PUT_LINE('i:'||i||'cubo'||i3);
+  8  END LOOP;
+  9  END;
+ 10  ;
+ 11  /
+i3 = i**3;
+   *
+ERROR at line 6:
+ORA-06550: line 6, column 4: 
+PLS-00103: Encountered the symbol "=" when expecting one of the following: 
+:= . ( @ % ; 
+The symbol ":= was inserted before "=" to continue. 
+ORA-06550: line 10, column 1: 
+PLS-00103: Encountered the symbol ";"  
+
+
+SQL> DECLARE
+  2  I3 NUMBER;
+  3  BEGIN
+  4  FOR I IN 1..10 LOOP
+  5  I3=I**3;
+  6  DBMS_OUTPUT.PUT_LINE('I:'||I||'cubo:'||I3);
+  7  END LOOP;
+  8  END;
+  9  /
+I3=I**3;
+  *
+ERROR at line 5:
+ORA-06550: line 5, column 3: 
+PLS-00103: Encountered the symbol "=" when expecting one of the following: 
+:= . ( @ % ; 
+The symbol ":= was inserted before "=" to continue. 
+
+
+SQL> DECLARE
+  2  I3 NUMBER;
+  3  BEGIN
+  4  FOR I IN 1..10 LOOP
+  5  I3:=I**3;
+  6  DBMS_OUTPUT.PUT_LINE('I:'||I||'cubo:'||I3);
+  7  END LOOP;
+  8  END;
+  9  /
+I:1cubo:1                                                                       
+I:2cubo:8                                                                       
+I:3cubo:27                                                                      
+I:4cubo:64                                                                      
+I:5cubo:125                                                                     
+I:6cubo:216                                                                     
+I:7cubo:343                                                                     
+I:8cubo:512                                                                     
+I:9cubo:729                                                                     
+I:10cubo:1000                                                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2  I3 NUMBER;
+  3  BEGIN
+  4  FOR I IN 1..10 LOOP
+  5  IF MOD (I,2)=0 THEN
+  6  I3:=I**3;
+  7  DBMS_OUTPUT.PUT_LINE('I:'||I||'cubo:'||I3);
+  8  END LOOP;
+  9  END;
+ 10  /
+END LOOP;
+    *
+ERROR at line 8:
+ORA-06550: line 8, column 5: 
+PLS-00103: Encountered the symbol "LOOP" when expecting one of the following: 
+if 
+
+
+SQL> DECLARE
+  2  I3 NUMBER;
+  3  BEGIN
+  4  FOR I IN 1..10 LOOP
+  5  IF MOD (I,2)=0 THEN
+  6  I3:=I**3;
+  7  DBMS_OUTPUT.PUT_LINE('I:'||I||'cubo:'||I3);
+  8  END IF;
+  9  END LOOP;
+ 10  END;
+ 11  /
+I:2cubo:8                                                                       
+I:4cubo:64                                                                      
+I:6cubo:216                                                                     
+I:8cubo:512                                                                     
+I:10cubo:1000                                                                   
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2  CURSOR C_PROF IS
+  3  SELECT * FROM PROFESOR;
+  4  v_prof PROFESOR%ROWTYPE;
+  5  BEGIN
+  6  OPEN C_PROF;
+  7  LOOP
+  8  FETCH C_PROF INTO v_prof;
+  9  EXIT WHEN C_PROF % NOTFOUND;
+ 10  DBMS_OUTPUT.PUT_LINE('DNI: '|| v_prof.DNI || 'Nombre: ' || v_prof.P);
+ 11  END LOOP;
+ 12  CLOSE C_PROF;
+ 13  /
+CLOSE C_PROF;
+            *
+ERROR at line 12:
+ORA-06550: line 12, column 13: 
+PLS-00103: Encountered the symbol "end-of-file" when expecting one of the 
+following: 
+( begin case declare end exception exit for goto if loop mod 
+null pragma raise return select update while with 
+<an identifier> <a double-quoted delimited-identifier> 
+<a bind variable> << continue close current delete fetch lock 
+insert open rollback savepoint set sql execute commit forall 
+merge pipe purge json_exists json_value json_query 
+json_object json_array 
+
+
+SQL> DECLARE
+  2  CURSOR C_PROF IS
+  3  SELECT * FROM PROFESOR;
+  4  v_prof PROFESOR%ROWTYPE;
+  5  BEGIN
+  6  OPEN C_PROF;
+  7  loop
+  8  
+SQL> 
+SQL> 
+SQL> DECLARE
+  2  CURSOR C_PROF IS
+  3  SELECT * FROM PROFESOR;
+  4  v_prof PROFESOR%ROWTYPE;
+  5  BEGIN
+  6  OPEN _PROF;
+  7  LOOP
+  8  FETCH C_PROF INTO v_prof;
+  9  EXIT WHEN C_PROF % NOTFOUND;
+ 10  DBMS_OUTPUT.PUT_LINE('DNI: '|| v_prof.DNI || 'Nombre: ' || v_prof.P);
+ 11  END LOOP;
+ 12  CLOSE C_PROF;
+ 13  END;
+ 14  /
+OPEN _PROF;
+     *
+ERROR at line 6:
+ORA-06550: line 6, column 6: 
+PLS-00103: Encountered the symbol "_" when expecting one of the following: 
+mod <an identifier> <a double-quoted delimited-identifier> 
+<a bind variable> continue current sql execute forall merge 
+pipe purge json_exists json_value json_query json_object 
+json_array 
+The symbol "_" was ignored. 
+
+
+SQL> DECLARE
+  2  CURSOR C_PROF IS
+  3  SELECT * FROM PROFESOR;
+  4  v_prof PROFESOR%ROWTYPE;
+  5  BEGIN
+  6  OPEN C_PROF;
+  7  LOOP
+  8  FETCH C_PROF INTO v_prof;
+  9  EXIT WHEN C_PROF % NOTFOUND;
+ 10  DBMS_OUTPUT.PUT_LINE('DNI: '|| v_prof.DNI || 'Nombre: ' || v_prof.P);
+ 11  END LOOP;
+ 12  CLOSE C_PROF;
+ 13  END;
+ 14  /
+DNI: 1111Nombre: JUAN                                                           
+DNI: 2222Nombre: CARLOS                                                         
+DNI: 3333Nombre: PEDRO                                                          
+DNI: 4444Nombre: MARIA                                                          
+DNI: 5555Nombre: IVAN                                                           
+DNI: 6666Nombre: CARMEN                                                         
+DNI: 7777Nombre: MARIO                                                          
+DNI: 8888Nombre: FRANCISCO                                                      
+DNI: 9999Nombre: ANGELA                                                         
+DNI: 1010Nombre: DAVID                                                          
+DNI: 2020Nombre: SOLEDAD                                                        
+DNI: 3030Nombre: JOSE MANUEL                                                    
+DNI: 4040Nombre: CARMELO                                                        
+DNI: 5050Nombre: CARINA                                                         
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2  CURSOR C_PROF IS
+  3  SELECT * FROM PROFESOR;
+  4  BEGIN
+  5  FOR v_prof IN C_PROF LOOP
+  6  DBMS_OUTPUT.PUT_LINE('DNI: '|| v_prof.DNI || 'Nombre: ' || v_prof.P);
+  7  END LOOP;
+  8  END;
+  9  /
+DNI: 1111Nombre: JUAN                                                           
+DNI: 2222Nombre: CARLOS                                                         
+DNI: 3333Nombre: PEDRO                                                          
+DNI: 4444Nombre: MARIA                                                          
+DNI: 5555Nombre: IVAN                                                           
+DNI: 6666Nombre: CARMEN                                                         
+DNI: 7777Nombre: MARIO                                                          
+DNI: 8888Nombre: FRANCISCO                                                      
+DNI: 9999Nombre: ANGELA                                                         
+DNI: 1010Nombre: DAVID                                                          
+DNI: 2020Nombre: SOLEDAD                                                        
+DNI: 3030Nombre: JOSE MANUEL                                                    
+DNI: 4040Nombre: CARMELO                                                        
+DNI: 5050Nombre: CARINA                                                         
+
+PL/SQL procedure successfully completed.
+
+SQL> --CREA UN PROCESO PL/SQL QUE RECIBA COMO ARGUMENTO EL CODIGO DE DEPARTAMENTO Y MUESTRE EN PANTALLA LAS AREAS ASOCIADAS A E SE DEARTAMENTO INVOCA ESE PROCEDIMIENTO CON EL CODIGO DE DEPARTAMENTO 1
+SQL> CREATE PROCEDURE AREAS_DEP(v_cd AREAS.CD%TYPE)
+  2  IS
+  3  CURSOR CONSULTA IS
+  4  SELECT AR
+  5  FROM AREA WHERE CD = CODIGO;
+  6  BEGIN
+  7  FOR LINEA IN CONSULTA LOOP
+  8  DBMS_OUTPUT.PUT_LINE('AREA: ' || LINEA.AR);
+  9  END LOOP;
+ 10  END;
+ 11  /
+
+Warning: Procedure created with compilation errors.
+
+SQL> CREATE PROCEDURE AREAS_DEP(CODIGO IN NUMBER)
+  2  IS
+  3  CURSOR CONSULTA IS
+  4  SELECT AR
+  5  FROM AREA WHERE CD = CODIGO;
+  6  BEGIN
+  7  FOR LINEA IN CONSULTA LOOP
+  8  DBMS_OUTPUT.PUT_LINE('AREA: ' || LINEA.AR);
+  9  END LOOP;
+ 10  END;
+ 11  /
+CREATE PROCEDURE AREAS_DEP(CODIGO IN NUMBER)
+                 *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> CREATE PROCEDURE AREAS_DEP2(CODIGO IN NUMBER)
+  2  IS
+  3  CURSOR CONSULTA IS
+  4  SELECT AR
+  5  FROM AREA WHERE CD = CODIGO;
+  6  BEGIN
+  7  FOR LINEA IN CONSULTA LOOP
+  8  DBMS_OUTPUT.PUT_LINE('AREA: ' || LINEA.AR);
+  9  END LOOP;
+ 10  END;
+ 11  /
+
+Procedure created.
+
+SQL> BEGIN CONSULTA(1)
+  2  END;
+  3  /
+END;
+*
+ERROR at line 2:
+ORA-06550: line 2, column 1: 
+PLS-00103: Encountered the symbol "END" when expecting one of the following: 
+:= . ( % ; 
+The symbol ";" was substituted for "END" to continue. 
+
+
+SQL> BEGIN CONSULTA(1);
+  2  END;
+  3  /
+BEGIN CONSULTA(1);
+      *
+ERROR at line 1:
+ORA-06550: line 1, column 7: 
+PLS-00201: identifier 'CONSULTA' must be declared 
+ORA-06550: line 1, column 7: 
+PL/SQL: Statement ignored 
+
+
+SQL> BEGIN AREAS_DEP2(1);
+  2  END;
+  3  /
+AREA: ANALISIS MATEMATICO                                                       
+AREA: DIDACTICA DE LA MATEMATICA                                                
+AREA: MATEMATICA APLICADA                                                       
+
+PL/SQL procedure successfully completed.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> SPOOL OFF
