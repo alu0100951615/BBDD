@@ -1,0 +1,961 @@
+Microsoft Windows [Versión 10.0.17763.253]
+(c) 2018 Microsoft Corporation. Todos los derechos reservados.
+
+C:\Users\danie>ssh -p 2205 alu0100951615@exthost2.etsii.ull.es
+alu0100951615@exthost2.etsii.ull.es's password:
+Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-134-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+Last login: Wed Jan 16 19:15:19 2019 from 10.20.50.104
+alu0100951615@399c5e70c219:~$ sqlplus2
+
+SQL*Plus: Release 12.2.0.1.0 Production on Wed Jan 16 20:18:01 2019
+
+Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+
+SP2-0310: unable to open file "ORCLPDB1.sql"
+Enter user-name: alu0100951615
+Enter password:
+ERROR:
+ORA-12162: TNS:net service name is incorrectly specified
+
+
+Enter user-name:
+[1]+  Stopped                 sqlplus2
+alu0100951615@399c5e70c219:~$ sqlplus2 alu0100951615
+
+SQL*Plus: Release 12.2.0.1.0 Production on Wed Jan 16 20:18:17 2019
+
+Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+
+Enter password:
+Last Successful login time: Wed Jan 16 2019 20:10:18 +00:00
+
+Connected to:
+Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production
+
+SQL> SELECT D,P
+  2  FROM AREA NATURAL JOIN DEPARTAMENTO NATURAL JOIN PROFESOR;
+
+D
+------------------------------------------------------------
+P
+------------------------------------------------------------
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+JUAN
+
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+CARLOS
+
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+PEDRO
+
+
+D
+------------------------------------------------------------
+P
+------------------------------------------------------------
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+MARIA
+
+MATEMATICA FUNDAMENTAL
+IVAN
+
+ASTROFISICA
+CARMEN
+
+
+D
+------------------------------------------------------------
+P
+------------------------------------------------------------
+ANALISIS MATEMATICO
+MARIO
+
+ANALISIS MATEMATICO
+FRANCISCO
+
+ANALISIS MATEMATICO
+ANGELA
+
+
+D
+------------------------------------------------------------
+P
+------------------------------------------------------------
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+DAVID
+
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+SOLEDAD
+
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+JOSE MANUEL
+
+
+D
+------------------------------------------------------------
+P
+------------------------------------------------------------
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+CARMELO
+
+ANALISIS MATEMATICO
+CARINA
+
+
+14 rows selected.
+
+SQL> SELECT D,P
+  2  FROM DEPARTAMENTO NATURAL JOIN AREA
+  3  NATURAL JOIN PROFESOR;
+
+D
+------------------------------------------------------------
+P
+------------------------------------------------------------
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+JUAN
+
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+CARLOS
+
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+PEDRO
+
+
+D
+------------------------------------------------------------
+P
+------------------------------------------------------------
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+MARIA
+
+MATEMATICA FUNDAMENTAL
+IVAN
+
+ASTROFISICA
+CARMEN
+
+
+D
+------------------------------------------------------------
+P
+------------------------------------------------------------
+ANALISIS MATEMATICO
+MARIO
+
+ANALISIS MATEMATICO
+FRANCISCO
+
+ANALISIS MATEMATICO
+ANGELA
+
+
+D
+------------------------------------------------------------
+P
+------------------------------------------------------------
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+DAVID
+
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+SOLEDAD
+
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+JOSE MANUEL
+
+
+D
+------------------------------------------------------------
+P
+------------------------------------------------------------
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION
+CARMELO
+
+ANALISIS MATEMATICO
+CARINA
+
+
+14 rows selected.
+
+SQL> SELECT ( SELECT SYSDATE FROM DUAL )-FI FROM PLAN_DOCENTE WHERE DNI = 8888 AND CAS = 11;
+
+(SELECTSYSDATEFROMDUAL)-FI
+--------------------------
+                  3424.856
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE (SELECT SYSDATE FROM DUAL) - FI > 365);
+
+P
+------------------------------------------------------------
+JUAN
+CARLOS
+PEDRO
+MARIA
+IVAN
+CARMEN
+MARIO
+FRANCISCO
+ANGELA
+DAVID
+SOLEDAD
+
+P
+------------------------------------------------------------
+JOSE MANUEL
+
+12 rows selected.
+
+SQL> SELECT P FROM PROFESOR WHERE DNI IN (SELECT DNI FROM PLAN_DOCENTE WHERE (FF) - FI > 365);
+
+P
+------------------------------------------------------------
+JUAN
+MARIA
+CARMEN
+DAVID
+
+SQL> SELECT COUNT (P) FROM PROFESOR
+  2  NATURAL JOIN DEPARTAMENTO
+  3  WHERE D = 'ASTROFISICA';
+
+  COUNT(P)
+----------
+        14
+
+SQL> SELECT COUNT (P) FROM PROFESOR
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  WHERE D = 'ASTROFISICA';
+
+  COUNT(P)
+----------
+         1
+
+SQL> SELECT COUNT (P) FROM PROFESOR
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  GROUP BY D ORDER BY D;
+
+  COUNT(P)
+----------
+         4
+         1
+         8
+         1
+
+SQL> SELECT D, COUNT (P) FROM PROFESOR
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  GROUP BY D ORDER BY D;
+
+D                                                              COUNT(P)
+------------------------------------------------------------ ----------
+ANALISIS MATEMATICO                                                   4
+ASTROFISICA                                                           1
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                     8
+MATEMATICA FUNDAMENTAL                                                1
+
+SQL> SELECT D, COUNT (P) FROM PROFESOR
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  GROUP BY D ORDER BY D;
+
+D                                                              COUNT(P)
+------------------------------------------------------------ ----------
+ANALISIS MATEMATICO                                                   4
+ASTROFISICA                                                           1
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                     8
+MATEMATICA FUNDAMENTAL                                                1
+
+SQL> SELECT D, COUNT (P) FROM PROFESOR
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  GROUP BY D ORDER BY D;
+
+D                                                              COUNT(P)
+------------------------------------------------------------ ----------
+ANALISIS MATEMATICO                                                   4
+ASTROFISICA                                                           1
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                     8
+MATEMATICA FUNDAMENTAL                                                1
+
+SQL> SELECT D, COUNT (P) FROM PROFESOR
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  GROUP BY AR ORDER BY D;
+SELECT D, COUNT (P) FROM PROFESOR
+       *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression
+
+
+SQL> SELECT D, COUNT (P) FROM PROFESOR
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  GROUP BY AR ORDER BY D;
+SELECT D, COUNT (P) FROM PROFESOR
+       *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression
+
+
+SQL> SELECT D, COUNT (P) FROM PROFESOR
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  GROUP BY D ORDER BY D;
+
+D                                                              COUNT(P)
+------------------------------------------------------------ ----------
+ANALISIS MATEMATICO                                                   4
+ASTROFISICA                                                           1
+ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION                     8
+MATEMATICA FUNDAMENTAL                                                1
+
+SQL> SELECT COUNT(T) FROM ASIGNATURA
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  WHERE D = ' ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION';
+
+  COUNT(T)
+----------
+         0
+
+SQL> SELECT COUNT(T) FROM ASIGNATURA
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  WHERE D = 'ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION';
+
+  COUNT(T)
+----------
+         8
+
+SQL> SELECT COUNT( DISTINC (T)) FROM ASIGNATURA
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  WHERE D = 'ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION';
+SELECT COUNT( DISTINC (T)) FROM ASIGNATURA
+              *
+ERROR at line 1:
+ORA-00904: "DISTINC": invalid identifier
+
+
+SQL> SELECT COUNT( DISTINCT(T)) FROM ASIGNATURA
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  WHERE D = 'ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION';
+
+COUNT(DISTINCT(T))
+------------------
+                 2
+
+SQL> SELECT * FROM ASIGNATURA
+  2  ;
+
+       CAS A                                                  T           CUR
+---------- -------------------------------------------------- ---- ----------
+       CAR         CT         CP         CL
+---------- ---------- ---------- ----------
+         1 BASES DE DATOS                                     GII           3
+         7          3        1.5        1.5
+
+         2 INTELIGENCIA ARTIFICIAL                            GII           3
+         4        1.5        1.5          3
+
+         3 ALMACENES DE DATOS                                 MII           1
+         7        1.5          0        1.5
+
+
+       CAS A                                                  T           CUR
+---------- -------------------------------------------------- ---- ----------
+       CAR         CT         CP         CL
+---------- ---------- ---------- ----------
+         4 MINERIA DE DATOS                                   MII           1
+         7        1.5          0        1.5
+
+         5 INFORMATICA BASICA                                 GII           1
+         7          3        1.5        1.5
+
+         6 ALGEBRA                                            GII           1
+         1          3          3          0
+
+
+       CAS A                                                  T           CUR
+---------- -------------------------------------------------- ---- ----------
+       CAR         CT         CP         CL
+---------- ---------- ---------- ----------
+         7 CALCULO                                            GII           1
+         8          3          3          0
+
+         8 OPTIMIZACION                                       GII           1
+         6          3        1.5        1.5
+
+         9 GESTION DE RIESGOS                                 GII           3
+         4          3          0          3
+
+
+       CAS A                                                  T           CUR
+---------- -------------------------------------------------- ---- ----------
+       CAR         CT         CP         CL
+---------- ---------- ---------- ----------
+        10 ASTRONOMIA                                         GF            2
+         3          3        1.5        1.5
+
+        11 ENSENANZA DE LA MATEMATICA                         GM            2
+         5          6          0          0
+
+        12 ANALISIS COMPLEJO                                  GM            4
+         2        4.5          3          0
+
+
+       CAS A                                                  T           CUR
+---------- -------------------------------------------------- ---- ----------
+       CAR         CT         CP         CL
+---------- ---------- ---------- ----------
+        13 ESTADISTICA                                        GII           3
+         6          0          0          0
+
+
+13 rows selected.
+
+SQL> SELECT T FROM ASIGNATURA;
+
+T
+----
+GII
+GII
+MII
+MII
+GII
+GII
+GII
+GII
+GII
+GF
+GM
+
+T
+----
+GM
+GII
+
+13 rows selected.
+
+SQL> SELECT COUNT( DISTINCT(T)) FROM ASIGNATURA
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  WHERE D = 'ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION';
+
+COUNT(DISTINCT(T))
+------------------
+                 2
+
+SQL> SELECT COUNT( DISTINCT(T)) FROM ASIGNATURA
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  WHERE D = 'ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION';
+
+COUNT(DISTINCT(T))
+------------------
+                 2
+
+SQL> SELECT T FROM ASIGNATURA;
+
+T
+----
+GII
+GII
+MII
+MII
+GII
+GII
+GII
+GII
+GII
+GF
+GM
+
+T
+----
+GM
+GII
+
+13 rows selected.
+
+SQL> SELECT T,CAR FROM ASIGNATURA;
+
+T           CAR
+---- ----------
+GII           7
+GII           4
+MII           7
+MII           7
+GII           7
+GII           1
+GII           8
+GII           6
+GII           4
+GF            3
+GM            5
+
+T           CAR
+---- ----------
+GM            2
+GII           6
+
+13 rows selected.
+
+SQL> SELECT * FROM ASIGNATURA;
+
+       CAS A                                                  T           CUR
+---------- -------------------------------------------------- ---- ----------
+       CAR         CT         CP         CL
+---------- ---------- ---------- ----------
+         1 BASES DE DATOS                                     GII           3
+         7          3        1.5        1.5
+
+         2 INTELIGENCIA ARTIFICIAL                            GII           3
+         4        1.5        1.5          3
+
+         3 ALMACENES DE DATOS                                 MII           1
+         7        1.5          0        1.5
+
+
+       CAS A                                                  T           CUR
+---------- -------------------------------------------------- ---- ----------
+       CAR         CT         CP         CL
+---------- ---------- ---------- ----------
+         4 MINERIA DE DATOS                                   MII           1
+         7        1.5          0        1.5
+
+         5 INFORMATICA BASICA                                 GII           1
+         7          3        1.5        1.5
+
+         6 ALGEBRA                                            GII           1
+         1          3          3          0
+
+
+       CAS A                                                  T           CUR
+---------- -------------------------------------------------- ---- ----------
+       CAR         CT         CP         CL
+---------- ---------- ---------- ----------
+         7 CALCULO                                            GII           1
+         8          3          3          0
+
+         8 OPTIMIZACION                                       GII           1
+         6          3        1.5        1.5
+
+         9 GESTION DE RIESGOS                                 GII           3
+         4          3          0          3
+
+
+       CAS A                                                  T           CUR
+---------- -------------------------------------------------- ---- ----------
+       CAR         CT         CP         CL
+---------- ---------- ---------- ----------
+        10 ASTRONOMIA                                         GF            2
+         3          3        1.5        1.5
+
+        11 ENSENANZA DE LA MATEMATICA                         GM            2
+         5          6          0          0
+
+        12 ANALISIS COMPLEJO                                  GM            4
+         2        4.5          3          0
+
+
+       CAS A                                                  T           CUR
+---------- -------------------------------------------------- ---- ----------
+       CAR         CT         CP         CL
+---------- ---------- ---------- ----------
+        13 ESTADISTICA                                        GII           3
+         6          0          0          0
+
+
+13 rows selected.
+
+SQL> SELECT AR, COUNT (P) FROM PROFESOR
+  2  NATURAL JOIN AREA
+  3  GROUP BY AR;
+
+AR                                                             COUNT(P)
+------------------------------------------------------------ ----------
+ALGEBRA                                                               1
+ASTRONOMIA Y ASTROFISICA                                              1
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                  2
+ANALISIS MATEMATICO                                                   1
+ESTADISTICA E INVESTIGACION OPERATIVA                                 2
+DIDACTICA DE LA MATEMATICA                                            1
+LENGUAJES Y SISTEMAS INFORMATICOS                                     4
+MATEMATICA APLICADA                                                   2
+
+8 rows selected.
+
+SQL> SELECT AR, COUNT (P) FROM PROFESOR
+  2  NATURAL JOIN AREA
+  3  GROUP BY AR;
+
+AR                                                             COUNT(P)
+------------------------------------------------------------ ----------
+ALGEBRA                                                               1
+ASTRONOMIA Y ASTROFISICA                                              1
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                  2
+ANALISIS MATEMATICO                                                   1
+ESTADISTICA E INVESTIGACION OPERATIVA                                 2
+DIDACTICA DE LA MATEMATICA                                            1
+LENGUAJES Y SISTEMAS INFORMATICOS                                     4
+MATEMATICA APLICADA                                                   2
+
+8 rows selected.
+
+SQL> SELECT AR, COUNT (P) FROM PROFESOR
+  2  NATURAL JOIN AREA
+  3  WHERE AR LIKE 'A%'
+  4  GROUP BY AR;
+
+AR                                                             COUNT(P)
+------------------------------------------------------------ ----------
+ALGEBRA                                                               1
+ASTRONOMIA Y ASTROFISICA                                              1
+ANALISIS MATEMATICO                                                   1
+
+SQL> SELECT COUNT (A) FROM ASIGNATURA
+  2  GROUP BY T ORDER BY T;
+
+  COUNT(A)
+----------
+         1
+         8
+         2
+         2
+
+SQL> SELECT A, COUNT (A) FROM ASIGNATURA
+  2  GROUP BY T ORDER BY T;
+SELECT A, COUNT (A) FROM ASIGNATURA
+       *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression
+
+
+SQL> SELECT  COUNT (A) FROM ASIGNATURA
+  2  GROUP BY T ORDER BY T;
+
+  COUNT(A)
+----------
+         1
+         8
+         2
+         2
+
+SQL> SELECT T COUNT (A) FROM ASIGNATURA
+  2  GROUP BY T ORDER BY T;
+SELECT T COUNT (A) FROM ASIGNATURA
+               *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> SELECT T, COUNT (A) FROM ASIGNATURA
+  2  GROUP BY T ORDER BY T;
+
+T      COUNT(A)
+---- ----------
+GF            1
+GII           8
+GM            2
+MII           2
+
+SQL> SELECT A FROM ASIGNATURA WHERE CT IN (SELECT MAX(CT) FROM ASIGNATURA);
+
+A
+--------------------------------------------------
+ENSENANZA DE LA MATEMATICA
+
+SQL> SELECT A FROM ASIGNATURA WHERE CT IN (SELECT MIN(CT) FROM ASIGNATURA);
+
+A
+--------------------------------------------------
+ESTADISTICA
+
+SQL> SELECT A, CT+CP+CL FROM ASIGNATURA;
+
+A                                                    CT+CP+CL
+-------------------------------------------------- ----------
+BASES DE DATOS                                              6
+INTELIGENCIA ARTIFICIAL                                     6
+ALMACENES DE DATOS                                          3
+MINERIA DE DATOS                                            3
+INFORMATICA BASICA                                          6
+ALGEBRA                                                     6
+CALCULO                                                     6
+OPTIMIZACION                                                6
+GESTION DE RIESGOS                                          6
+ASTRONOMIA                                                  6
+ENSENANZA DE LA MATEMATICA                                  6
+
+A                                                    CT+CP+CL
+-------------------------------------------------- ----------
+ANALISIS COMPLEJO                                         7.5
+ESTADISTICA                                                 0
+
+13 rows selected.
+
+SQL> SELECT A FROM ASIGNATURA WHERE CT+CP+CL IN (SELECT MIN(CT+CL+CP) FROM ASIGNATURA);
+
+A
+--------------------------------------------------
+ESTADISTICA
+
+SQL> SELECT A FROM ASIGNATURA WHERE CT+CP+CL IN (SELECT MAX(CT+CL+CP) FROM ASIGNATURA);
+
+A
+--------------------------------------------------
+ANALISIS COMPLEJO
+
+SQL> SELECT A FROM AREA
+  2
+SQL> SELECT AR FROM AREA
+  2  NATURAL JOIN ASIGNATURA
+  3  WHERE (SELECT MAX(CT+CP+CL) FROM ASIGNATURA);
+WHERE (SELECT MAX(CT+CP+CL) FROM ASIGNATURA)
+                                           *
+ERROR at line 3:
+ORA-00936: missing expression
+
+
+SQL> SELECT A FROM AREA
+  2  NATURAL JOIN ASIGNATURA
+  3  WHERE CT+CP+CL IN (SELECT MAX(CT+CP+CL) FROM ASIGNATURA);
+
+A
+--------------------------------------------------
+ANALISIS COMPLEJO
+
+SQL> SELECT AR FROM AREA
+  2  NATURAL JOIN ASIGNATURA
+  3  WHERE CT+CP+CL IN (SELECT MAX(CT+CP+CL) FROM ASIGNATURA);
+
+AR
+------------------------------------------------------------
+ANALISIS MATEMATICO
+
+SQL> SELECT COUNT (A) FROM ASIGNATURA
+  2  NATURAL JOIN PROFESOR
+  3  WHERE DNI = 1111;
+
+  COUNT(A)
+----------
+         2
+
+SQL> SELECT COUNT(DISTINC(CAS)) ASIGNATURAS FROM PLAN_DOCENTE
+  2  WHERE DNI='1111';
+SELECT COUNT(DISTINC(CAS)) ASIGNATURAS FROM PLAN_DOCENTE
+             *
+ERROR at line 1:
+ORA-00904: "DISTINC": invalid identifier
+
+
+SQL> SELECT COUNT(DISTINCT(CAS)) ASIGNATURAS FROM PLAN_DOCENTE
+  2  WHERE DNI='1111';
+
+ASIGNATURAS
+-----------
+          1
+
+SQL> SELECT COUNT (A) FROM ASIGNATURA
+  2  NATURAL JOIN PROFESOR
+  3  WHERE DNI='1111';
+
+  COUNT(A)
+----------
+         2
+
+SQL> SELECT COUNT (DISTINCT((A) FROM ASIGNATURA
+  2  NATURAL JOIN PROFESOR
+  3  WHERE DNI='1111';
+SELECT COUNT (DISTINCT((A) FROM ASIGNATURA
+                           *
+ERROR at line 1:
+ORA-00907: missing right parenthesis
+
+
+SQL> SELECT COUNT (DISTINCT(A)) FROM ASIGNATURA
+  2  NATURAL JOIN PROFESOR
+  3  WHERE DNI='1111';
+
+COUNT(DISTINCT(A))
+------------------
+                 2
+
+SQL> SELECT COUNT (DISTINCT(CAS)) FROM PLAN_DOCENTE
+  2  NATURAL JOIN PROFESOR
+  3  WHERE DNI='1111';
+
+COUNT(DISTINCT(CAS))
+--------------------
+                   1
+
+SQL> SELECT CT+CP+CL FROM ASIGNATURA
+  2  NATURAL JOIN PROFESOR
+  3  WHERE DNI='1111';
+
+  CT+CP+CL
+----------
+         6
+         0
+
+SQL> SELECT P, CT+CP+CL FROM ASIGNATURA
+  2  NATURAL JOIN PROFESOR
+  3  WHERE DNI='1111';
+
+P                                                              CT+CP+CL
+------------------------------------------------------------ ----------
+JUAN                                                                  6
+JUAN                                                                  0
+
+SQL> SELECT DNI,CPA+CPA+CLA FROM PLAN_DOCENTE
+  2  ;
+
+       DNI CPA+CPA+CLA
+---------- -----------
+      4444         4.5
+      4444           0
+      4444           0
+      1111         4.5
+      1111           0
+      3030         4.5
+      2222         1.5
+      2222         1.5
+      1010           6
+      3333           6
+      1010           3
+
+       DNI CPA+CPA+CLA
+---------- -----------
+      1010         1.5
+      9999           6
+      5555           6
+      6666         4.5
+      8888           0
+      2020         1.5
+      7777           6
+      3333         1.5
+
+19 rows selected.
+
+SQL> SELECT DNI,CPA+CPA+CLA FROM PLAN_DOCENTE WHERE DNI='1111';
+
+       DNI CPA+CPA+CLA
+---------- -----------
+      1111         4.5
+      1111           0
+
+SQL> SELECT DNI,CTA+CPA+CLA FROM PLAN_DOCENTE WHERE DNI='1111';
+
+       DNI CTA+CPA+CLA
+---------- -----------
+      1111           6
+      1111           3
+
+SQL> SELECT P, CT+CP+CL FROM ASIGNATURA
+  2  NATURAL JOIN PROFESORA
+  3  WHERE DNI='1111';
+NATURAL JOIN PROFESORA
+             *
+ERROR at line 2:
+ORA-00942: table or view does not exist
+
+
+SQL> SELECT P, CT+CP+CL FROM ASIGNATURA
+  2  NATURAL JOIN PROFESOR
+  3  WHERE DNI='1111';
+
+P                                                              CT+CP+CL
+------------------------------------------------------------ ----------
+JUAN                                                                  6
+JUAN                                                                  0
+
+SQL> SELECT P FROM PROFESOR
+  2  NATURAL JOIN ASIGNATURA
+  3  WHERE CT+CP+CL IN (SELECT MAX(CT+CP+CL) FROM ASIGNATURA);
+
+P
+------------------------------------------------------------
+MARIO
+
+SQL> SELECT P FROM PROFESOR
+  2  NATURAL JOIN ASIGNATURA
+  3  WHERE CT+CP+CL IN (SELECT MAX(CT+CP+CL) FROM ASIGNATURA);
+
+P
+------------------------------------------------------------
+MARIO
+
+SQL> SELECT P FROM PROFESOR
+  2  NATURAL JOIN PLAN_DOCENTE
+  3  WHERE CT+CP+CL IN (SELECT MAX(CT+CP+CL) FROM ASIGNATURA) AND FF IS NULL;
+WHERE CT+CP+CL IN (SELECT MAX(CT+CP+CL) FROM ASIGNATURA) AND FF IS NULL
+            *
+ERROR at line 3:
+ORA-00904: "CL": invalid identifier
+
+
+SQL> SELECT P FROM PROFESOR
+  2  NATURAL JOIN PLAN_DOCENTE
+  3  WHERE CTA+CPA+CLA IN (SELECT MAX(CTA+CPA+CLA) FROM ASIGNATURA) AND FF IS NULL;
+
+P
+------------------------------------------------------------
+DAVID
+JUAN
+SOLEDAD
+CARLOS
+JOSE MANUEL
+PEDRO
+PEDRO
+MARIA
+MARIA
+IVAN
+MARIO
+
+P
+------------------------------------------------------------
+FRANCISCO
+ANGELA
+
+13 rows selected.
+
+SQL> SELECT P FROM PROFESOR
+  2  NATURAL JOIN PLAN_DOCENTE
+  3  WHERE CTA+CPA+CLA IN (SELECT MAX(CTA+CPA+CLA) FROM PLAN_DOCENTE) AND FF IS NULL;
+
+P
+------------------------------------------------------------
+MARIO
+
+SQL> SELECT AVG(COUNT(A)) FROM ASIGNATURA
+  2  NATURAL JOIN AREA
+  3  GROUP BY A;
+
+AVG(COUNT(A))
+-------------
+            1
+
+SQL> SELECT AVG(COUNT(A)) FROM ASIGNATURA
+  2  NATURAL JOIN AREA
+  3  GROUP BY AR;
+
+AVG(COUNT(A))
+-------------
+        1.625
+
+SQL> SELECT AVG(COUNT(P)) FROM PROFESOR
+  2  NATURAL JOIN AREA
+  3  NATURAL JOIN DEPARTAMENTO
+  4  GROUP BY D;
+
+AVG(COUNT(P))
+-------------
+          3.5
